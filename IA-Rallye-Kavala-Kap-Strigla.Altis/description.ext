@@ -1,0 +1,96 @@
+author = "y0014984";
+onLoadName = "Rallye Kavala Kap Strigla";
+onLoadMission = "Möge der Schnellste gewinnen, oder der Glücklichste.";
+onLoadIntro = "Ich hoffe, ihr seid bereit für das, was euch erwartet.";
+onLoadMissionTime = 1;
+onLoadIntroTime = 1;
+loadScreen = "Textures\Cover.paa";
+overviewPicture = "Textures\Cover.paa";
+overviewText = "Rallye Kavala Kap Strigla - eine Altis Rallye von y0014984"
+
+class Header
+{
+	gameType = Coop;
+};
+
+class CfgFunctions
+{
+	class BIS
+	{
+		class Bootcamp_MP
+		{
+			class focusOnObject	{ file = "Functions\fn_focusOnObject.sqf"; };
+			class firingRange	{ file = "functions\fn_firingRange.sqf"; };
+			class timeTrial		{ file = "functions\fn_timeTrial.sqf"; };
+		};
+	};
+};
+
+cba_settings_hasSettingsFile = 1;
+
+class Params
+{
+	class ParamTimeSpeed
+	{
+		title = "Zeitgeschwindigkeit";
+		texts[] = {"1x","2x","4x","6x","8x","10x","12x","15x","30x","60x"};
+		values[] = {1,2,4,6,8,10,12,15,30,60};
+		default = 6;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+	class ParamYear
+	{
+		title = "Jahr";
+		texts[] = {"2020", "2021", "2022", "2023", "2024", "2025"};
+		values[] = {2020,2021,2022,2023,2024,2025};
+		default = 2020;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+	class ParamMonth
+	{
+		title = "Monat";
+		texts[] = {"Januar", "Februar", "März", "April", "Mail", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"};
+		values[] = {1,2,3,4,5,6,7,8,9,10,11,12};
+		default = 11;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+	class ParamDay
+	{
+		title = "Tag";
+		texts[] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+		values[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31};
+		default = 24;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+	class ParamHour
+	{
+		title = "Stunde";
+		texts[] = {"00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+		values[] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
+		default = 15;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+	class ParamMinute
+	{
+		title = "Minute";
+		texts[] = {"0", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"};
+		values[] = {0,5,10,15,20,25,30,35,40,45,50,55};
+		default = 30;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+	class ParamToday
+	{
+		title = "heutiges Datum und Uhrzeit einstellen?";
+		texts[] = {"ja", "nein"};
+		values[] = {1,0};
+		default = 1;
+		//file = "Scripts\???.sqf";
+		isGlobal = 0;
+	};
+};
