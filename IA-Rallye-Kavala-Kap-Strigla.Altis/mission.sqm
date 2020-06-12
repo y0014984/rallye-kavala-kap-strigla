@@ -8,7 +8,7 @@ class EditorData
 	toggles=513;
 	class ItemIDProvider
 	{
-		nextID=911;
+		nextID=912;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=71;
+		nextID=81;
 	};
 	class Camera
 	{
-		pos[]={3605.5034,30.303663,13362.855};
-		dir[]={-0.55240917,-0.71533978,0.42794931};
-		up[]={-0.56549841,0.69877511,0.43808982};
-		aside[]={0.61242342,-6.4173946e-009,0.79053283};
+		pos[]={3633.1824,9.1702175,13393.473};
+		dir[]={0.96720594,-0.14391625,0.20965126};
+		up[]={0.14071557,0.98957175,0.030500758};
+		aside[]={0.21185425,-1.1014054e-006,-0.97738421};
 	};
 };
 binarizationWanted=0;
@@ -282,9 +282,10 @@ class ScenarioData
 	overViewPictureLocked="Textures\Cover.paa";
 	onLoadMission="Rallye Kavala Kap Strigla ist eine Altis Rallye von y0014984";
 	loadScreen="Textures\Cover.paa";
+	briefing=0;
 	debriefing=0;
+	showMap=0;
 	saving=0;
-	forceRotorLibSimulation=1;
 	respawnDialog=0;
 	respawn=3;
 	respawnDelay=300;
@@ -551,7 +552,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=361;
+		items=362;
 		class Item0
 		{
 			dataType="Object";
@@ -564,7 +565,7 @@ class Mission
 			flags=4;
 			class Attributes
 			{
-				init="call{_vehicle setVariable [""fuelConsumption"", 0,0008, true]; " \n "_vehicle setVariable [""speedLimit"", 90, true];" \n "_handle = [this] execVM ""Scripts\FlipVehicleAction.sqf"";}";
+				init="call{this setVariable [""fuelConsumption"", 0.0008, true]; " \n "this setVariable [""speedLimit"", 90, true];" \n "_handle = [this] execVM ""Scripts\FlipVehicleAction.sqf"";}";
 				name="support1";
 			};
 			id=103;
@@ -606,7 +607,7 @@ class Mission
 									"STRING"
 								};
 							};
-							value="[[[[],[]],[[],[]],[[],[]],[[],[]]],false]";
+							value="[[[[],[]],[[],[]],[[""ACE_NVG_Wide""],[2]],[[],[]]],false]";
 						};
 					};
 				};
@@ -653,25 +654,6 @@ class Mission
 			class CustomAttributes
 			{
 				class Attribute0
-				{
-					property="ammoBox";
-					expression="[_this,_value] call bis_fnc_initAmmoBox;";
-					class Value
-					{
-						class data
-						{
-							class type
-							{
-								type[]=
-								{
-									"STRING"
-								};
-							};
-							value="[[[[],[]],[[],[]],[[""ACE_NVG_Wide""],[2]],[[],[]]],false]";
-						};
-					};
-				};
-				class Attribute1
 				{
 					property="VehicleCustomization";
 					expression="if (local _this) then {if (isSimpleObject _this) then {_this setVariable ['bis_fnc_initVehicle_customization',_value]} else {([_this] + _value + [true]) call (uinamespace getvariable 'bis_fnc_initVehicle');};};";
@@ -779,7 +761,45 @@ class Mission
 						};
 					};
 				};
-				nAttributes=2;
+				class Attribute1
+				{
+					property="ammoBox";
+					expression="[_this,_value] call bis_fnc_initAmmoBox;";
+					class Value
+					{
+						class data
+						{
+							class type
+							{
+								type[]=
+								{
+									"STRING"
+								};
+							};
+							value="[[[[],[]],[[],[]],[[""ACE_NVG_Wide""],[2]],[[],[]]],false]";
+						};
+					};
+				};
+				class Attribute2
+				{
+					property="ace_cargo_space";
+					expression="[_this,_value] call ace_cargo_fnc_setSpace;";
+					class Value
+					{
+						class data
+						{
+							class type
+							{
+								type[]=
+								{
+									"SCALAR"
+								};
+							};
+							value=2;
+						};
+					};
+				};
+				nAttributes=3;
 			};
 		};
 		class Item2
@@ -892,6 +912,7 @@ class Mission
 					flags=6;
 					class Attributes
 					{
+						init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 						name="s1f";
 						description="Fahrer (Zeus/Instandsetzer)@Supportteam 1";
 						isPlayable=1;
@@ -976,6 +997,7 @@ class Mission
 					flags=4;
 					class Attributes
 					{
+						init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 						name="s1b";
 						description="Beifahrer (Zeus/Arzt)";
 						isPlayable=1;
@@ -1094,9 +1116,9 @@ class Mission
 					flags=7;
 					class Attributes
 					{
+						init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 						name="h1p";
-						description="Pilot (Zeus)@Fernsehhelikopter 1";
-						isPlayer=1;
+						description="Pilot (Zeus/Pionier)@Fernsehhelikopter 1";
 						isPlayable=1;
 						class Inventory
 						{
@@ -1109,6 +1131,25 @@ class Mission
 					{
 						class Attribute0
 						{
+							property="ace_isEngineer";
+							expression="if !(_value == ([0,1] select (_this getUnitTrait 'engineer'))|| {_value == -1}) then {_this setVariable ['ace_isEngineer', _value, true]}";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=1;
+								};
+							};
+						};
+						class Attribute1
+						{
 							property="speaker";
 							expression="_this setspeaker _value;";
 							class Value
@@ -1126,7 +1167,7 @@ class Mission
 								};
 							};
 						};
-						class Attribute1
+						class Attribute2
 						{
 							property="pitch";
 							expression="_this setpitch _value;";
@@ -1145,7 +1186,7 @@ class Mission
 								};
 							};
 						};
-						nAttributes=2;
+						nAttributes=3;
 					};
 				};
 				class Item1
@@ -1153,15 +1194,16 @@ class Mission
 					dataType="Object";
 					class PositionInfo
 					{
-						position[]={3652.6709,7.6039858,13428.144};
+						position[]={3652.6709,7.6039863,13428.144};
 						angles[]={0,2.3157027,0};
 					};
 					side="Civilian";
 					flags=5;
 					class Attributes
 					{
+						init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 						name="h1c";
-						description="Co-Pilot (Zeus)";
+						description="Co-Pilot (Zeus/Sanitäter)";
 						isPlayable=1;
 						class Inventory
 						{
@@ -1169,10 +1211,29 @@ class Mission
 					};
 					id=182;
 					type="C_man_pilot_F";
-					atlOffset=0.025999546;
+					atlOffset=0.026000023;
 					class CustomAttributes
 					{
 						class Attribute0
+						{
+							property="ace_isMedic";
+							expression="if (_value != -1 && {_value != (parseNumber (_this getUnitTrait 'medic'))}) then {_this setVariable [""ace_medical_medicClass"", _value, true]}";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=1;
+								};
+							};
+						};
+						class Attribute1
 						{
 							property="speaker";
 							expression="_this setspeaker _value;";
@@ -1191,7 +1252,7 @@ class Mission
 								};
 							};
 						};
-						class Attribute1
+						class Attribute2
 						{
 							property="pitch";
 							expression="_this setpitch _value;";
@@ -1210,7 +1271,7 @@ class Mission
 								};
 							};
 						};
-						nAttributes=2;
+						nAttributes=3;
 					};
 				};
 			};
@@ -1270,7 +1331,7 @@ class Mission
 										};
 										class value
 										{
-											items=320;
+											items=322;
 											class Item0
 											{
 												class data
@@ -5751,6 +5812,34 @@ class Mission
 													value="ACE_Chemlight_HiWhite";
 												};
 											};
+											class Item320
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="ACE_morphine";
+												};
+											};
+											class Item321
+											{
+												class data
+												{
+													class type
+													{
+														type[]=
+														{
+															"STRING"
+														};
+													};
+													value="ACE_personalAidKit";
+												};
+											};
 										};
 									};
 								};
@@ -8048,7 +8137,7 @@ class Mission
 			flags=4;
 			class Attributes
 			{
-				init="call{_vehicle setVariable [""fuelConsumption"", 0,0015, true]; " \n "_vehicle setVariable [""speedLimit"", 135, true];" \n "_handle = [this] execVM ""Scripts\FlipVehicleAction.sqf"";}";
+				init="call{this setVariable [""fuelConsumption"", 0.0015, true]; " \n "this setVariable [""speedLimit"", 135, true];" \n "_handle = [this] execVM ""Scripts\FlipVehicleAction.sqf"";}";
 				name="support2";
 			};
 			id=363;
@@ -8090,7 +8179,7 @@ class Mission
 									"STRING"
 								};
 							};
-							value="[[[[],[]],[[],[]],[[],[]],[[],[]]],false]";
+							value="[[[[],[]],[[],[]],[[""ACE_NVG_Wide""],[2]],[[],[]]],false]";
 						};
 					};
 				};
@@ -8331,8 +8420,8 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={3630.4739,8.1980371,13352.395};
-				angles[]={0,3.2469661,0};
+				position[]={3633.1636,8.2163639,13348.206};
+				angles[]={0,3.2469583,0};
 			};
 			side="Empty";
 			flags=5;
@@ -8341,7 +8430,6 @@ class Mission
 			};
 			id=438;
 			type="SignAd_Sponsor_Redstone_F";
-			atlOffset=-1.9073486e-006;
 			class CustomAttributes
 			{
 				class Attribute0
@@ -8359,7 +8447,7 @@ class Mission
 									"STRING"
 								};
 							};
-							value="Textures\Flag.paa";
+							value="Textures\SignResourcesSpawn.paa";
 						};
 					};
 				};
@@ -8371,18 +8459,18 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={3659.6885,8.287262,13362.06};
+				position[]={3659.6885,8.2878847,13362.06};
 				angles[]={0.033318337,2.3769464,0.053284902};
 			};
 			side="Empty";
 			flags=4;
 			class Attributes
 			{
-				init="call{_handle = [this] execVM ""Scripts\TimeTravel.sqf"";" \n "_handle = [this] execVM ""Scripts\EventStart.sqf"";}";
+				init="call{_handle = [this] execVM ""Scripts\EventStart.sqf"";}";
 			};
 			id=439;
 			type="Land_InfoStand_V1_F";
-			atlOffset=-0.00062227249;
+			atlOffset=4.7683716e-007;
 			class CustomAttributes
 			{
 				class Attribute0
@@ -8400,7 +8488,7 @@ class Mission
 									"STRING"
 								};
 							};
-							value="Textures\Admin.paa";
+							value="Textures\RaceStart.paa";
 						};
 					};
 				};
@@ -8412,8 +8500,8 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={3654.8286,8.3527699,13371.734};
-				angles[]={0,2.3255198,0};
+				position[]={3670.113,8.7110491,13379.146};
+				angles[]={0,1.7775829,0};
 			};
 			side="Empty";
 			flags=5;
@@ -8422,7 +8510,7 @@ class Mission
 			};
 			id=440;
 			type="SignAd_Sponsor_Redstone_F";
-			atlOffset=6.1988831e-006;
+			atlOffset=9.5367432e-007;
 			class CustomAttributes
 			{
 				class Attribute0
@@ -8440,7 +8528,7 @@ class Mission
 									"STRING"
 								};
 							};
-							value="Textures\Flag.paa";
+							value="Textures\SignVehicleSpawn.paa";
 						};
 					};
 				};
@@ -12942,7 +13030,26 @@ class Mission
 						};
 					};
 				};
-				nAttributes=1;
+				class Attribute1
+				{
+					property="ace_cargo_space";
+					expression="[_this,_value] call ace_cargo_fnc_setSpace;";
+					class Value
+					{
+						class data
+						{
+							class type
+							{
+								type[]=
+								{
+									"SCALAR"
+								};
+							};
+							value=6;
+						};
+					};
+				};
+				nAttributes=2;
 			};
 		};
 		class Item176
@@ -14260,8 +14367,8 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={3634.5315,8.2700701,13346.391};
-				angles[]={0,1.656355,0};
+				position[]={3623.5181,8.1787481,13342.308};
+				angles[]={0,4.3577447,0};
 			};
 			side="Empty";
 			flags=5;
@@ -14270,14 +14377,13 @@ class Mission
 			};
 			id=709;
 			type="Land_PortableLight_single_F";
-			atlOffset=3.8146973e-006;
 		};
 		class Item207
 		{
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={3626.6282,8.2259188,13343.667};
+				position[]={3624.1892,8.1878519,13340.625};
 				angles[]={0,0.66061622,0};
 			};
 			side="Empty";
@@ -14293,8 +14399,8 @@ class Mission
 			dataType="Object";
 			class PositionInfo
 			{
-				position[]={3628.8525,8.3937693,13346.605};
-				angles[]={0.0053265258,0.81618071,0.0080009829};
+				position[]={3631.6296,8.5149221,13343.2};
+				angles[]={0.0053265258,2.415658,0.0026520467};
 			};
 			side="Empty";
 			flags=4;
@@ -14304,7 +14410,7 @@ class Mission
 			};
 			id=712;
 			type="Land_Cargo20_vr_F";
-			atlOffset=-0.089519501;
+			atlOffset=-1.8596649e-005;
 		};
 		class Item209
 		{
@@ -16860,6 +16966,7 @@ class Mission
 					};
 					id=886;
 					type="Land_ClutterCutter_large_F";
+					atlOffset=0.055473804;
 				};
 				class Item10
 				{
@@ -17078,84 +17185,130 @@ class Mission
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={28322.383,14.808358,25782.865};
-				angles[]={6.2685165,6.1086836,6.2578578};
+				position[]={28322.381,14.808364,25782.865};
+				angles[]={6.2685246,6.1086874,6.2578607};
 			};
+			name="spectator1";
+			init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 			isPlayable=1;
 			description="Zuschauer 1";
 			id=901;
 			type="ace_spectator_virtual";
-			atlOffset=4.0054321e-005;
 		};
 		class Item356
 		{
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={28321.949,14.820521,25783.006};
-				angles[]={6.247201,6.1086836,6.2791886};
+				position[]={28321.949,14.820481,25783.006};
+				angles[]={6.2471962,6.1086874,6.2791882};
 			};
+			name="spectator2";
+			init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 			isPlayable=1;
 			description="Zuschauer 2";
 			id=902;
 			type="ace_spectator_virtual";
-			atlOffset=4.0054321e-005;
 		};
 		class Item357
 		{
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={28321.566,14.820074,25782.951};
-				angles[]={6.247201,6.1086836,6.2791886};
+				position[]={28321.566,14.820034,25782.951};
+				angles[]={6.2471962,6.1086874,6.2791882};
 			};
+			name="spectator3";
+			init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 			isPlayable=1;
 			description="Zuschauer 3";
 			id=903;
 			type="ace_spectator_virtual";
-			atlOffset=4.0054321e-005;
 		};
 		class Item358
 		{
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={28322.787,14.787107,25782.172};
-				angles[]={6.247201,6.1086836,6.2791886};
+				position[]={28322.787,14.787067,25782.172};
+				angles[]={6.2471962,6.1086874,6.2791882};
 			};
+			name="spectator4";
+			init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 			isPlayable=1;
 			description="Zuschauer 4";
 			id=904;
 			type="ace_spectator_virtual";
-			atlOffset=4.0054321e-005;
 		};
 		class Item359
 		{
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={28322.775,14.77087,25781.719};
-				angles[]={6.247201,6.1086836,6.2791886};
+				position[]={28322.775,14.770896,25781.721};
+				angles[]={6.2471962,6.1086874,6.2791882};
 			};
+			name="spectator5";
+			init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 			isPlayable=1;
 			description="Zuschauer 5";
 			id=905;
 			type="ace_spectator_virtual";
-			atlOffset=4.0054321e-005;
 		};
 		class Item360
 		{
 			dataType="Logic";
 			class PositionInfo
 			{
-				position[]={28322.662,14.796696,25782.555};
-				angles[]={6.2685165,6.1086836,6.2578578};
+				position[]={28322.662,14.796656,25782.555};
+				angles[]={6.2685246,6.1086874,6.2578607};
 			};
+			name="spectator6";
+			init="call{_handle = [this] execVM ""Scripts\RacingOrderAction.sqf"";}";
 			isPlayable=1;
 			description="Zuschauer 6";
 			id=906;
 			type="ace_spectator_virtual";
-			atlOffset=4.0054321e-005;
+		};
+		class Item361
+		{
+			dataType="Object";
+			class PositionInfo
+			{
+				position[]={3646.7749,8.3169918,13355.275};
+				angles[]={0,2.7656488,0};
+			};
+			side="Empty";
+			flags=5;
+			class Attributes
+			{
+			};
+			id=911;
+			type="SignAd_Sponsor_Redstone_F";
+			atlOffset=4.7683716e-007;
+			class CustomAttributes
+			{
+				class Attribute0
+				{
+					property="ObjectTextureCustom0";
+					expression="_this setObjectTextureGlobal [0,_value]";
+					class Value
+					{
+						class data
+						{
+							class type
+							{
+								type[]=
+								{
+									"STRING"
+								};
+							};
+							value="Textures\SignLoadout.paa";
+						};
+					};
+				};
+				nAttributes=1;
+			};
 		};
 	};
 };

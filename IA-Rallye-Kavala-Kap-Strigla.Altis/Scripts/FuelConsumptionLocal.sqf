@@ -2,12 +2,23 @@
 
 _oldFuel = 0;
 
+_fuelConsumptionCheckerStatus = false;
+
 while {true} do
 {
 	_vehicle = vehicle player;
 	_driver = driver _vehicle;
 	_fuel = fuel _vehicle;
 	_rate = _vehicle getVariable "fuelConsumption";
+
+	_enabled = player getVariable "fuelConsumptionChecker";
+	if (isNil "_enabled") then {_enabled = false;};
+	
+	if (!(_fuelConsumptionCheckerStatus isEqualTo _enabled)) then
+	{
+		_fuelConsumptionCheckerStatus = _enabled;
+		if (_fuelConsumptionCheckerStatus isEqualTo false) then {hintSilent "";};
+	};
 
 	if ((_vehicle != player) and (_driver == player) and (isEngineOn _vehicle) and (alive _vehicle) and (fuel _vehicle > 0) and (!isNil "_rate")) then
 	{
@@ -22,21 +33,32 @@ while {true} do
 		
 		_minutesToGo = (_fuel / _totalConsumption) / 60;
 		
+		_kilometresToGo = _speed * (_minutesToGo / 60);
+		
 		_totalConsumption = parseNumber ((_totalConsumption * 100) toFixed 2);
 		_baseConsumption = parseNumber ((_baseConsumption * 100) toFixed 2);
 		
 		_minutesToGo = parseNumber (_minutesToGo toFixed 1);
 		
+		_kilometresToGo = parseNumber (_kilometresToGo toFixed 1);
+		
 		_addConsumption = parseNumber ((_fuelConsumption * 100) toFixed 2);
 		_fuelTotal = parseNumber ((_fuel * 100) toFixed 2);
-
-
-		_enabled = player getVariable "fuelConsumptionChecker";
-		if (isNil "_enabled") then {_enabled = false;};
+	
 		if (_enabled) then
 		{
-			hint format ["Füllstand: %2%1\nGesamtverbrauch: %3%1/sec\nBasisverbrauch: %4%1/sec\nZusatzverbrauch: %5%1/sec\nRestlaufzeit: %6 min.", "%", _fuelTotal, _totalConsumption, _baseConsumption, _addConsumption, _minutesToGo];
+			hintSilent format [
+				"Füllstand: %2%1\n" + 
+				"Gesamtverbrauch: %3%1/sec\n" + 
+				"Basisverbrauch: %4%1/sec\n" + 
+				"Zusatzverbrauch: %5%1/sec\n" + 
+				"Restlaufzeit: %6 min.\n" +
+				"Reststrecke: %7 km", "%", _fuelTotal, _totalConsumption, _baseConsumption, _addConsumption, _minutesToGo, _kilometresToGo];
 		};
+	}
+	else
+	{
+		player setVariable ["fuelConsumptionChecker", false, true];
 	};
 	
 	_oldFuel = _fuel;

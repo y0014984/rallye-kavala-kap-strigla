@@ -27,15 +27,21 @@ force ace_gforces_enabledFor = 2;
 force ace_zeus_autoAddObjects = true;
 force ace_zeus_zeusBird = true;
 
-// ACE Zuschauer
-force ace_spectator_enableAI = true;
-
 // ACE-Medicsystem
 force ace_medical_treatment_advancedBandages = 2;
+force ace_medical_treatment_allowSelfPAK = 1;
 force ace_medical_treatment_allowSelfStitch = 1;
+force ace_medical_treatment_locationPAK = 0;
 force ace_medical_treatment_locationSurgicalKit = 0;
 force ace_medical_treatment_medicPAK = 2;
+force ace_medical_fractures = 2;
 
 // TFAR - Allgemeine Einstellungen
 force TFAR_giveMicroDagrToSoldier = false;
 force tfar_radioCodesDisabled = true;
+
+// ACE-Nachtsicht
+force ace_nightvision_aimDownSightsBlur = 0;
+force ace_nightvision_effectScaling = 0;
+force ace_nightvision_fogScaling = 0;
+force ace_nightvision_noiseScaling = 0;

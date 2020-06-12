@@ -1,3 +1,5 @@
+//_handle = [this] execVM "Scripts\TimeTravel.sqf";
+
 params ["_object"];
 
 _action =

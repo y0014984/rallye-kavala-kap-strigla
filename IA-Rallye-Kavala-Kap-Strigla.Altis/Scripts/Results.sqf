@@ -8,12 +8,12 @@ fnc_TimeFormat =
 	_minutes = 0;
 	_seconds = 0;
 	
-    if (_time > 3600) then
+    if (_time >= 3600) then
 	{
         _hours = floor(_time / 3600);
 		_time = _time - (_hours * 3600);
     };
-    if (_time > 60) then
+    if (_time >= 60) then
 	{
         _minutes = floor(_time / 60);
 		_time = _time - (_minutes * 60);
@@ -50,6 +50,8 @@ _teams =
 	_driver1 = missionNamespace getVariable (_x select 1);
 	_driver2 = missionNamespace getVariable (_x select 2);
 	
+	/* ================================================================================ */
+	
 	if ((!isNil "_driver1") and (!isNil "_driver2")) then
 	{
 		_driver1Start = _driver1 getVariable "triggerStart";
@@ -70,6 +72,46 @@ _teams =
 		{
 			if (_driver2Start < _driver1Start) then {_teamStartTime = _driver2Start};
 		};
+		
+		_teamRaceTime = 0;
+		if ((_teamStartTime > 0) and (_teamFinishTime > 0)) then {_teamRaceTime = _teamFinishTime - _teamStartTime};
+		
+		_x set [0, _teamRaceTime];
+		_teams set [_forEachIndex, _x];
+	};
+	
+	/* ================================================================================ */
+	
+	if ((!isNil "_driver1") and (isNil "_driver2")) then
+	{
+		_driver1Start = _driver1 getVariable "triggerStart";
+		_driver1Finish = _driver1 getVariable "triggerFinish";
+		
+		_teamFinishTime = 0;
+		if (!isNil "_driver1Finish") then {_teamFinishTime = _driver1Finish};
+		
+		_teamStartTime = 0;
+		if (!isNil "_driver1Start") then {_teamStartTime = _driver1Start};
+		
+		_teamRaceTime = 0;
+		if ((_teamStartTime > 0) and (_teamFinishTime > 0)) then {_teamRaceTime = _teamFinishTime - _teamStartTime};
+		
+		_x set [0, _teamRaceTime];
+		_teams set [_forEachIndex, _x];
+	};
+	
+	/* ================================================================================ */
+	
+	if ((!isNil "_driver2") and (isNil "_driver1")) then
+	{
+		_driver2Start = _driver2 getVariable "triggerStart";
+		_driver2Finish = _driver2 getVariable "triggerFinish";
+		
+		_teamFinishTime = 0;
+		if (!isNil "_driver2Finish") then {_teamFinishTime = _driver1Finish};
+		
+		_teamStartTime = 0;
+		if (!isNil "_driver2Start") then {_teamStartTime = _driver1Start};
 		
 		_teamRaceTime = 0;
 		if ((_teamStartTime > 0) and (_teamFinishTime > 0)) then {_teamRaceTime = _teamFinishTime - _teamStartTime};
