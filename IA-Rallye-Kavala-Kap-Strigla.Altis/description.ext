@@ -8,11 +8,22 @@ loadScreen = "Textures\Cover.paa";
 overviewPicture = "Textures\Cover.paa";
 overviewText = "Rallye Kavala Kap Strigla - eine Altis Rallye von y0014984"
 
+class cfgFunctions
+{
+  #include "GRAD_fireworks\cfgFunctions.hpp"
+};
+
+class cfgSounds
+{
+  #include "GRAD_fireworks\cfgSounds.hpp"
+};
+
 class Header
 {
 	gameType = Coop;
 };
 
+/*
 class CfgFunctions
 {
 	class BIS
@@ -25,6 +36,7 @@ class CfgFunctions
 		};
 	};
 };
+*/
 
 cba_settings_hasSettingsFile = 1;
 
